@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+@import "tailwindcss";
+
+/* Dark mode variant for Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Jint Consult brand colors */
+  --color-jint-red: #DC2626;
+  --color-jint-red-dark: #B91C1C;
+  --color-jint-red-light: #FCA5A5;
+  
+  /* Keep Manrope as default */
+  --font-sans: "Manrope", sans-serif;
+  
+  /* Liquid animation */
+  --animate-liquid: liquid 8s ease-in-out infinite;
+  
+  @keyframes liquid {
+    0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  }
+}
+
+@layer base {
+    * {
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+  
+  body {
+    @apply bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/10 dark:bg-black/30 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-2xl shadow-black/10;
+  }
+  
+  .glass-red {
+    @apply bg-jint-red/10 backdrop-blur-xl border border-jint-red/20 shadow-2xl shadow-jint-red/10;
+  }
+  
+  .liquid-blob {
+    filter: url(#gooey);
+  }
+  
+  /* Red gradient button for Jint */
+  .btn-jint {
+    @apply bg-jint-red hover:bg-jint-red-dark text-white px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 active:scale-95 shadow-lg shadow-jint-red/25;
+  }
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media print {
+  button, .no-print {
+    display: none !important;
+  }
+  
+    * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Make Jint red gradients solid for PDF */
+  .bg-gradient-to-r, .bg-gradient-to-br {
+    background: #DC2626 !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+}
