@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { Linkedin, Mail } from 'lucide-react'
+import { Mail } from 'lucide-react'
+import { FaLinkedinIn } from 'react-icons/fa';
 
 const team = [
   {
@@ -73,7 +74,7 @@ export default function TeamSection() {
 
                 <div className="flex gap-2">
                   <a href={member.linkedin} className="glass p-1.5 md:p-2 rounded-lg text-gray-700 dark:text-white/70 hover:text-jint-red transition-colors cursor-pointer">
-                    <Linkedin className="w-3 h-3 md:w-4 md:h-4" />
+                    <FaLinkedinIn className="w-3 h-3 md:w-4 md:h-4" />
                   </a>
                   <a href={`mailto:${member.email}`} className="glass p-1.5 md:p-2 rounded-lg text-gray-700 dark:text-white/70 hover:text-jint-red transition-colors cursor-pointer">
                     <Mail className="w-3 h-3 md:w-4 md:h-4" />
