@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { services } from '../data/services'
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function ServicesGrid() {
+  const { siteContent } = useSiteSettings()
+  const services = siteContent.services || []
+
   return (
     <section id="services" className="py-16 md:py-24 px-4 md:px-6 bg-gray-50 dark:bg-zinc-950">
       <div className="max-w-7xl mx-auto">
@@ -40,7 +43,7 @@ export default function ServicesGrid() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                   <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-jint-red text-white text-[10px] md:text-xs font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full">
-                    View Details
+                    {service.tag || 'View Details'}
                   </div>
 
                   <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">

@@ -1,21 +1,19 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
-
-const testimonials = [
-  { name: 'Kwame A.', text: 'Got my passport in 2 weeks. Jint Consult is legit!', rating: 5 },
-  { name: 'Akosua M.', text: 'They handled my company registration without stress. Highly recommend.', rating: 5 },
-  { name: 'Joseph T.', text: 'Best car sales service. All documents were clean.', rating: 5 },
-]
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function Testimonials() {
+  const { siteContent } = useSiteSettings()
+  const testimonials = siteContent.testimonials.items
+  const title = siteContent.testimonials.title
   const [index, setIndex] = useState(0)
 
   return (
     <section id="testimonials" className="py-24 px-6 bg-gray-50 dark:bg-zinc-950">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-16">
-          Client <span className="text-jint-red">Love</span>
+          {title}
         </h2>
         <div className="relative">
           <AnimatePresence mode="wait">

@@ -1,25 +1,23 @@
 import { motion } from 'framer-motion'
 import { Send, Cog, CheckCircle, MessageCircle } from 'lucide-react'
-
-const steps = [
-  { icon: Send, title: 'Consultation', desc: 'Schedule a meeting to discuss your financial goals and needs' },
-  { icon: Cog, title: 'Analysis & Planning', desc: 'Our experts review your situation and develop tailored solutions' },
-  { icon: CheckCircle, title: 'Implementation & Support', desc: 'We execute the plan and provide ongoing guidance' },
-]
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function ProcessSection() {
-  const whatsappNumber = '233XXXXXXXXX'
-  const whatsappMessage = encodeURIComponent('Hello Jint Consult, I need help with...')
+  const { siteContent } = useSiteSettings()
+  const process = siteContent.process
+  const steps = process.steps.map((step, index) => ({ ...step, icon: [Send, Cog, CheckCircle][index] }))
+  const whatsappNumber = process.whatsappNumber
+  const whatsappMessage = encodeURIComponent(process.whatsappMessage)
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
 
   return (
     <section id="process" className="py-16 md:py-24 px-4 md:px-6 bg-white dark:bg-black">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white text-center mb-4 md:mb-6">
-          How It <span className="text-jint-red">Works</span>
+          {process.title}
         </h2>
         <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 text-center mb-10 md:mb-16 max-w-2xl mx-auto">
-          From consultation to implementation. Simplified professional services.
+          {process.subtitle}
         </p>
 
         {/* 1 col mobile, 3 on md */}

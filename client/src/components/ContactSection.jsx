@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import { MapPin, Navigation, Send } from 'lucide-react'
 import { api } from '../lib/api'
-import { serviceSubjects } from '../data/services'
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 const schema = z.object({
   name: z.string().min(2, 'Name too short'),
@@ -17,7 +17,9 @@ const schema = z.object({
 
 export default function ContactSection() {
   const [status, setStatus] = useState({ type: '', message: '' })
-  const mapQuery = encodeURIComponent('14 Abuja Street Ritz Junction, Madina Accra, Greater Accra, Ghana')
+  const { siteContent } = useSiteSettings()
+  const contact = siteContent.contact
+  const mapQuery = encodeURIComponent(contact.mapQuery)
   const mapSrc = `https://www.google.com/maps?q=${mapQuery}&output=embed`
   const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({
@@ -61,13 +63,11 @@ export default function ContactSection() {
               Find Us On The <span className="text-jint-red">Map</span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Visit us at our office or open directions directly in Google Maps.
+              {contact.subtitle}
             </p>
             <div className="flex items-start gap-3 text-gray-700 dark:text-gray-300">
               <MapPin className="w-5 h-5 text-jint-red mt-1 flex-shrink-0" />
-              <span>
-                14 Abuja Street Ritz Junction, Madina Accra <br />Greater Accra, Ghana
-              </span>
+              <span className="whitespace-pre-line">{contact.address}</span>
             </div>
           </div>
 
@@ -108,7 +108,7 @@ export default function ContactSection() {
           className="glass rounded-3xl p-8 md:p-12"
         >
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">
-            Submit an <span className="text-jint-red">Inquiry</span>
+            {contact.title}
           </h2>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
@@ -131,7 +131,7 @@ export default function ContactSection() {
             <select {...register('subject')}
             className="w-full glass rounded-xl px-4 py-3 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-jint-red cursor-pointer">
             <option value="" className="bg-white dark:bg-zinc-900">Select Subject</option>
-            {serviceSubjects.map(subject => (
+            {contact.subjects.map(subject => (
               <option key={subject} value={subject} className="bg-white dark:bg-zinc-900">{subject}</option>
             ))}
           </select>

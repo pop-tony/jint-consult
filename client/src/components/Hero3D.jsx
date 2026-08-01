@@ -1,13 +1,18 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function Hero3D() {
+  const { siteContent } = useSiteSettings()
+  const hero = siteContent.hero
+  const stats = siteContent.stats
+
   return (
     <section id="home" className="relative min-h-screen w-full overflow-hidden">
       {/* Clear Background Image - Full Cover */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069" 
+          src={hero.backgroundImage} 
           alt="Jint Consult office"
           className="w-full h-full object-cover"
         />
@@ -29,25 +34,24 @@ export default function Hero3D() {
             className="glass rounded-3xl p-8 md:p-12 backdrop-blur-2xl"
           >
             <div className="inline-block glass-red px-4 py-2 rounded-full mb-6">
-              <span className="text-jint-red font-semibold text-sm">Trusted in Ghana Since 2018</span>
+              <span className="text-jint-red font-semibold text-sm">{hero.eyebrow}</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-6">
-              Professional Tax & Accounting <span className="text-jint-red">Solutions</span>
+              {hero.title}
             </h1>
             
             <p className="text-lg text-white/90 mb-8 leading-relaxed">
-              Jint Consult delivers comprehensive tax, accounting, business consulting, 
-              certification, and audit services. Strategic financial guidance for individuals and businesses.
+              {hero.subtitle}
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <Link to="/book-consultation" className="bg-jint-red hover:bg-jint-red-dark text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer shadow-2xl shadow-jint-red/40">
-                Start Application
+              <Link to={hero.primaryCtaLink} className="bg-jint-red hover:bg-jint-red-dark text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer shadow-2xl shadow-jint-red/40">
+                {hero.primaryCtaLabel}
               </Link>
-              <a href="#services" 
+              <a href={hero.secondaryCtaLink} 
                  className="bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/30 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer">
-                Our Services
+                {hero.secondaryCtaLabel}
               </a>
             </div>
 
@@ -75,11 +79,7 @@ export default function Hero3D() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="hidden lg:block space-y-6"
           >
-            {[
-              { label: 'Tax Returns Filed', value: '2,400+', icon: '📊' },
-              { label: 'Audits Completed', value: '650+', icon: '✓' },
-              { label: 'Business Consultations', value: '1,200+', icon: '💼' },
-            ].map((stat, i) => (
+            {stats.slice(0, 3).map((stat, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -89,9 +89,8 @@ export default function Hero3D() {
                 className="glass rounded-2xl p-6 backdrop-blur-2xl cursor-default"
               >
                 <div className="flex items-center gap-4">
-                  <div className="text-4xl">{stat.icon}</div>
                   <div>
-                    <div className="text-2xl font-bold text-white">{stat.value}</div>
+                    <div className="text-2xl font-bold text-white">{stat.value}{stat.suffix || ''}</div>
                     <div className="text-white/70 text-sm">{stat.label}</div>
                   </div>
                 </div>

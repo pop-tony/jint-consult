@@ -152,10 +152,10 @@ export const serviceSubjects = [
   'Financial Advisory',
 ]
 
-export function getServiceBySlug(slug) {
+export function getServiceBySlug(slug, catalog = services) {
   if (slug === consultationService.slug) {
     return consultationService
   }
 
-  return services.find(service => service.slug === slug)
+  return catalog.find(service => service.slug === slug)
 }

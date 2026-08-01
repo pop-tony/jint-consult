@@ -6,23 +6,12 @@ import ProcessSection from '../components/ProcessSection'
 import TeamSection from '../components/TeamSection'
 import Testimonials from '../components/Testimonials'
 import ContactSection from '../components/ContactSection'
-
-const highlights = [
-  {
-    title: 'Office and consultation space',
-    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069',
-  },
-  {
-    title: 'Business planning sessions',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
-  },
-  {
-    title: 'Client support and document review',
-    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2070',
-  },
-]
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function HomePage() {
+  const { siteContent } = useSiteSettings()
+  const highlights = siteContent.highlights
+
   return (
     <>
       <Hero3D />

@@ -3,10 +3,12 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, BadgeCheck, Sparkles } from 'lucide-react'
 import { getServiceBySlug } from '../data/services'
 import ServiceBookingForm from '../components/ServiceBookingForm'
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function ServiceDetailPage() {
   const { serviceSlug } = useParams()
-  const service = getServiceBySlug(serviceSlug)
+  const { siteContent } = useSiteSettings()
+  const service = getServiceBySlug(serviceSlug, siteContent.services)
 
   if (!service) {
     return (
