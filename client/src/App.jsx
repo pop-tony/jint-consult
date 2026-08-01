@@ -9,7 +9,6 @@ import ServicesPage from './pages/ServicesPage'
 import ServiceDetailPage from './pages/ServiceDetailPage'
 import ProcessPage from './pages/ProcessPage'
 import TeamPage from './pages/TeamPage'
-import TestimonialsPage from './pages/TestimonialsPage'
 import ContactPage from './pages/ContactPage'
 
 
@@ -28,7 +27,6 @@ function App() {
               <Route path="/book-consultation" element={<BookConsultationPage />} />
               <Route path="/process" element={<ProcessPage />} />
               <Route path="/team" element={<TeamPage />} />
-              <Route path="/testimonials" element={<TestimonialsPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
