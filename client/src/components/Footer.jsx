@@ -20,7 +20,7 @@ export default function Footer() {
               Jint<span className="text-jint-red">Consult</span>
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Your trusted partner for government documents, tax filing & car sales in Ghana.
+              Your trusted partner for tax, accounting, business consulting, audit, and compliance services in Ghana.
             </p>
             <div className="flex gap-3">
               {socials.map((social, i) => (

@@ -3,40 +3,40 @@ import { ArrowUpRight } from 'lucide-react'
 
 const services = [
   {
-    title: 'Birth Certificate',
-    desc: 'Fast processing for new & replacement certs',
-    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070',
+    title: 'Tax & Accounting',
+    desc: 'Personal & corporate tax returns, accounting, and tax planning',
+    image: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=2026',
+    tag: 'Core Service'
+  },
+  {
+    title: 'Business Consulting',
+    desc: 'Strategic guidance, financial planning, and operational optimization',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
     tag: 'Popular'
   },
   {
-    title: 'Passport',
-    desc: 'New applications & renewals handled',
-    image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074',
-    tag: 'Fast'
-  },
-  {
-    title: 'Ghana Card',
-    desc: 'Registration & replacement support',
-    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2072',
+    title: 'Audit Services',
+    desc: 'Comprehensive audits and financial statement review',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
     tag: null
   },
   {
-    title: 'Certificate of Incorporation',
-    desc: 'Register your business legally',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
-    tag: 'Business'
+    title: 'Certification & Documentation',
+    desc: 'Complete documentation support and regulatory compliance',
+    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070',
+    tag: 'Comprehensive'
   },
   {
-    title: 'Tax Filing',
-    desc: 'Personal & business tax returns',
-    image: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=2026',
-    tag: 'Seasonal'
+    title: 'Compliance Management',
+    desc: 'Ensure your business meets all regulatory requirements',
+    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069',
+    tag: 'Essential'
   },
   {
-    title: 'Car Sales',
-    desc: 'Buy & sell vehicles with proper docs',
-    image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083',
-    tag: 'Hot'
+    title: 'Financial Advisory',
+    desc: 'Expert insights for better financial decisions',
+    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069',
+    tag: 'Expert'
   },
 ]
 
@@ -46,10 +46,10 @@ export default function ServicesGrid() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10 md:mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-3 md:mb-4">
-            What We <span className="text-jint-red">Handle</span>
+            Our <span className="text-jint-red">Services</span>
           </h2>
           <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            All government documents and business services under one roof. No queues, no stress.
+            Comprehensive professional services tailored to your financial and business needs.
           </p>
         </div>
 

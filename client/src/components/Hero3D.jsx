@@ -32,12 +32,12 @@ export default function Hero3D() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight mb-6">
-              Gov Docs, Tax & Cars <span className="text-jint-red">Made Easy</span>
+              Professional Tax & Accounting <span className="text-jint-red">Solutions</span>
             </h1>
             
             <p className="text-lg text-white/90 mb-8 leading-relaxed">
-              Jint Consult handles Birth Certificates, Passports, Ghana Card, 
-              Certificate of Incorporation, Tax Filing & Car Sales. Fast, legal, stress-free.
+              Jint Consult delivers comprehensive tax, accounting, business consulting, 
+              certification, and audit services. Strategic financial guidance for individuals and businesses.
             </p>
             
             <div className="flex flex-wrap gap-4">
@@ -53,16 +53,16 @@ export default function Hero3D() {
             {/* Trust badges */}
             <div className="flex flex-wrap gap-6 mt-10 pt-8 border-t border-white/20">
               <div>
+                <div className="text-3xl font-bold text-white">8+</div>
+                <div className="text-white/70 text-sm">Years Experience</div>
+              </div>
+              <div>
                 <div className="text-3xl font-bold text-white">500+</div>
-                <div className="text-white/70 text-sm">Docs Processed</div>
+                <div className="text-white/70 text-sm">Clients Served</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-white">98%</div>
-                <div className="text-white/70 text-sm">Success Rate</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-white">24/7</div>
-                <div className="text-white/70 text-sm">Support</div>
+                <div className="text-3xl font-bold text-white">99%</div>
+                <div className="text-white/70 text-sm">Satisfaction</div>
               </div>
             </div>
           </motion.div>
@@ -75,9 +75,9 @@ export default function Hero3D() {
             className="hidden lg:block space-y-6"
           >
             {[
-              { label: 'Birth Certificates', value: '1,200+', icon: '📄' },
-              { label: 'Passports Processed', value: '850+', icon: '🛂' },
-              { label: 'Businesses Registered', value: '400+', icon: '🏢' },
+              { label: 'Tax Returns Filed', value: '2,400+', icon: '📊' },
+              { label: 'Audits Completed', value: '650+', icon: '✓' },
+              { label: 'Business Consultations', value: '1,200+', icon: '💼' },
             ].map((stat, i) => (
               <motion.div 
                 key={i}

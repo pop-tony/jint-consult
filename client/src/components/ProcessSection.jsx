@@ -2,9 +2,9 @@ import { motion } from 'framer-motion'
 import { Send, Cog, CheckCircle, MessageCircle } from 'lucide-react'
 
 const steps = [
-  { icon: Send, title: 'Submit Request', desc: 'Fill our form or WhatsApp us with your requirements' },
-  { icon: Cog, title: 'We Process', desc: 'Our team handles all the paperwork & follow-ups' },
-  { icon: CheckCircle, title: 'You Receive', desc: 'Get your documents delivered or ready for pickup' },
+  { icon: Send, title: 'Consultation', desc: 'Schedule a meeting to discuss your financial goals and needs' },
+  { icon: Cog, title: 'Analysis & Planning', desc: 'Our experts review your situation and develop tailored solutions' },
+  { icon: CheckCircle, title: 'Implementation & Support', desc: 'We execute the plan and provide ongoing guidance' },
 ]
 
 export default function ProcessSection() {
@@ -19,7 +19,7 @@ export default function ProcessSection() {
           How It <span className="text-jint-red">Works</span>
         </h2>
         <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 text-center mb-10 md:mb-16 max-w-2xl mx-auto">
-          3 simple steps. We handle the hard part.
+          From consultation to implementation. Simplified professional services.
         </p>
 
         {/* 1 col mobile, 3 on md */}
