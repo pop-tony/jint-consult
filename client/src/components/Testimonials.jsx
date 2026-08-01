@@ -12,7 +12,7 @@ export default function Testimonials() {
   const [index, setIndex] = useState(0)
 
   return (
-    <section className="py-24 px-6 bg-gray-50 dark:bg-zinc-950">
+    <section id="testimonials" className="py-24 px-6 bg-gray-50 dark:bg-zinc-950">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white text-center mb-16">
           Client <span className="text-jint-red">Love</span>

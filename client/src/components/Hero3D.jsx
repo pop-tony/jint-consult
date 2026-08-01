@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 export default function Hero3D() {
   return (
@@ -41,9 +42,9 @@ export default function Hero3D() {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <button className="bg-jint-red hover:bg-jint-red-dark text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer shadow-2xl shadow-jint-red/40">
+              <Link to="/book-consultation" className="bg-jint-red hover:bg-jint-red-dark text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer shadow-2xl shadow-jint-red/40">
                 Start Application
-              </button>
+              </Link>
               <a href="#services" 
                  className="bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/30 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer">
                 Our Services

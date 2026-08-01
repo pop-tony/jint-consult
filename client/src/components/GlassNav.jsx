@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X, Sun, Moon } from 'lucide-react'
 import { useTheme } from '../context/ThemeProvider'
+import assets from '../assets/assets.js'
 
 const links = ['Home', 'Services', 'Process', 'Contact']
 
@@ -15,9 +16,11 @@ export default function GlassNav() {
       animate={{ y: 0 }}
       className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl"
     >
-      <div className="glass rounded-2xl px-6 py-4 flex items-center justify-between">
+      <div className="glass rounded-2xl px-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white cursor-pointer">
-          Jint<span className="text-jint-red">Consult</span>
+          {assets.jintLogo && (
+            <img src={assets.jintLogo} alt="JintConsult Logo" className="h-20 w-auto" />
+          )}
         </h1>
 
         <div className="hidden md:flex items-center gap-8">

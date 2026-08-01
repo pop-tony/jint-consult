@@ -7,7 +7,7 @@ export default function Footer() {
     { icon: FaInstagram, href: 'https://instagram.com/jintconsult', label: 'Instagram' },
     { icon: FaTwitter, href: 'https://twitter.com/jintconsult', label: 'Twitter' },
     { icon: FaLinkedinIn, href: 'https://linkedin.com/company/jintconsult', label: 'LinkedIn' },
-    { icon: MessageCircle, href: 'https://wa.me/233XXXXXXXXX', label: 'WhatsApp' },
+    { icon: MessageCircle, href: 'https://wa.me/233534958619', label: 'WhatsApp' },
   ]
 
   return (
@@ -16,9 +16,9 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 cursor-pointer">
+            <a href="#home" className="inline-flex text-3xl font-bold text-gray-900 dark:text-white mb-4 cursor-pointer">
               Jint<span className="text-jint-red">Consult</span>
-            </h3>
+            </a>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Your trusted partner for tax, accounting, business consulting, audit, and compliance services in Ghana.
             </p>
@@ -37,7 +37,7 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Quick Links</h4>
             <ul className="space-y-3">
-              {['Home', 'Services', 'Process', 'Team', 'Contact'].map(link => (
+              {['Home', 'Services', 'Process', 'Team', 'Testimonials', 'Contact'].map(link => (
                 <li key={link}>
                   <a href={`#${link.toLowerCase()}`}
                      className="text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors cursor-pointer">
@@ -52,9 +52,9 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Contact Us</h4>
             <div className="space-y-4">
-              <a href="tel:+233XXXXXXXXX" className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors cursor-pointer">
+              <a href="tel:+233534958619" className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors cursor-pointer">
                 <Phone className="w-5 h-5 text-jint-red" />
-                +233 XX XXX XXXX
+                +233 534958619
               </a>
               <a href="mailto:info@jintconsult.com" className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors cursor-pointer">
                 <Mail className="w-5 h-5 text-jint-red" />
@@ -62,7 +62,7 @@ export default function Footer() {
               </a>
               <div className="flex items-start gap-3 text-gray-600 dark:text-gray-400">
                 <MapPin className="w-5 h-5 text-jint-red mt-1 flex-shrink-0" />
-                <span>East Legon, Accra<br />Greater Accra, Ghana</span>
+                <span>14 Abuja Street Ritz Junction, Madina Accra <br />Greater Accra, Ghana</span>
               </div>
             </div>
           </div>

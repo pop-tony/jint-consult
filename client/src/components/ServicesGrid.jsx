@@ -1,44 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-
-const services = [
-  {
-    title: 'Tax & Accounting',
-    desc: 'Personal & corporate tax returns, accounting, and tax planning',
-    image: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?q=80&w=2026',
-    tag: 'Core Service'
-  },
-  {
-    title: 'Business Consulting',
-    desc: 'Strategic guidance, financial planning, and operational optimization',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
-    tag: 'Popular'
-  },
-  {
-    title: 'Audit Services',
-    desc: 'Comprehensive audits and financial statement review',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
-    tag: null
-  },
-  {
-    title: 'Certification & Documentation',
-    desc: 'Complete documentation support and regulatory compliance',
-    image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070',
-    tag: 'Comprehensive'
-  },
-  {
-    title: 'Compliance Management',
-    desc: 'Ensure your business meets all regulatory requirements',
-    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069',
-    tag: 'Essential'
-  },
-  {
-    title: 'Financial Advisory',
-    desc: 'Expert insights for better financial decisions',
-    image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069',
-    tag: 'Expert'
-  },
-]
+import { Link } from 'react-router-dom'
+import { services } from '../data/services'
 
 export default function ServicesGrid() {
   return (
@@ -56,44 +19,45 @@ export default function ServicesGrid() {
         {/* 2 cols on mobile, 3 on lg */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8">
           {services.map((service, i) => (
-            <motion.div
+            <Link
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              whileHover={{ y: -4 }}
-              className="glass rounded-2xl md:rounded-3xl overflow-hidden group cursor-pointer"
+              to={`/services/${service.slug}`}
+              className="block"
             >
-              {/* Image - shorter on mobile */}
-              <div className="relative h-32 md:h-48 overflow-hidden">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                whileHover={{ y: -4 }}
+                className="glass rounded-2xl md:rounded-3xl overflow-hidden group cursor-pointer h-full"
+              >
+                <div className="relative h-32 md:h-48 overflow-hidden">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                {service.tag && (
                   <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-jint-red text-white text-[10px] md:text-xs font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full">
-                    {service.tag}
+                    View Details
                   </div>
-                )}
 
-                <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                  <ArrowUpRight className="w-3 h-3 md:w-5 md:h-5 text-white" />
+                  <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                    <ArrowUpRight className="w-3 h-3 md:w-5 md:h-5 text-white" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Content - tighter padding on mobile */}
-              <div className="p-3 md:p-6">
-                <h3 className="text-sm md:text-xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 group-hover:text-jint-red transition-colors line-clamp-1">
-                  {service.title}
-                </h3>
-                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                  {service.desc}
-                </p>
-              </div>
-            </motion.div>
+                <div className="p-3 md:p-6">
+                  <h3 className="text-sm md:text-xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 group-hover:text-jint-red transition-colors line-clamp-1">
+                    {service.title}
+                  </h3>
+                  <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                    {service.desc}
+                  </p>
+                </div>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </div>
