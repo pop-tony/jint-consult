@@ -52,7 +52,6 @@ export default function HomePage() {
       </section>
 
       <StatsLiquid />
-      <ServicesGrid />
       <ProcessSection />
       <TeamSection />
       <Testimonials />
