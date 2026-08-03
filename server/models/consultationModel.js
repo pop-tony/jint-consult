@@ -10,6 +10,6 @@ const ordersShema = new mongoose.Schema({
     subject: {type: String, required: true},
 },{timestamps: true},)
 
-const consultModel = mongoose.models.prisconsult || mongoose.model('prisconsult', ordersShema);
+const consultModel = mongoose.models.jintconsultations || mongoose.model('jintconsultations', ordersShema);
 
 export default consultModel;

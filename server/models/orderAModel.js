@@ -16,6 +16,6 @@ const ordersShema = new mongoose.Schema({
     size:{type: String}
 },{timestamps: true},)
 
-const orderAModel = mongoose.models.prisorders || mongoose.model('prisorders', ordersShema);
+const orderAModel = mongoose.models.jintbookings || mongoose.model('jintbookings', ordersShema);
 
 export default orderAModel;
