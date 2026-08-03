@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function Hero3D() {
   const { siteContent } = useSiteSettings()
+  const navigate = useNavigate()
   const hero = siteContent.hero
   const stats = siteContent.stats
 
@@ -46,9 +47,13 @@ export default function Hero3D() {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <Link to={hero.primaryCtaLink} className="bg-jint-red hover:bg-jint-red-dark text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer shadow-2xl shadow-jint-red/40">
+              <button
+                type="button"
+                onClick={() => navigate(hero.primaryCtaLink)}
+                className="bg-jint-red hover:bg-jint-red-dark text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer shadow-2xl shadow-jint-red/40"
+              >
                 {hero.primaryCtaLabel}
-              </Link>
+              </button>
               <a href={hero.secondaryCtaLink} 
                  className="bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/30 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105 cursor-pointer">
                 {hero.secondaryCtaLabel}

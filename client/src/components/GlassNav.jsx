@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Menu, X, Sun, Moon } from 'lucide-react'
-import { Link, NavLink } from 'react-router-dom'
 import { useTheme } from '../context/ThemeProvider'
 import assets from '../assets/assets.js'
 
@@ -14,8 +14,15 @@ const links = [
 ]
 
 export default function GlassNav() {
+
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const { theme, setTheme } = useTheme()
+
+  const goTo = (path) => {
+    setOpen(false)
+    navigate(path)
+  }
 
   return (
     <motion.nav
@@ -24,21 +31,17 @@ export default function GlassNav() {
       className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-7xl"
     >
       <div className="glass rounded-2xl px-6 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white cursor-pointer">
+        <button type="button" onClick={() => goTo('/')} className="text-2xl font-bold text-gray-900 dark:text-white cursor-pointer">
           {assets.jintLogo && (
             <img src={assets.jintLogo} alt="JintConsult Logo" className="h-20 w-auto" />
           )}
-        </Link>
+        </button>
 
         <div className="hidden md:flex items-center gap-8">
           {links.map(link => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) => `transition-colors cursor-pointer ${isActive ? 'text-jint-red font-semibold' : 'text-gray-700 dark:text-white/70 hover:text-jint-red'}`}
-            >
+            <button key={link.to} type="button" onClick={() => goTo(link.to)} className="transition-colors cursor-pointer">
               {link.label}
-            </NavLink>
+            </button>
           ))}
         </div>
 
@@ -57,14 +60,14 @@ export default function GlassNav() {
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
           className="glass rounded-2xl mt-2 p-6 md:hidden">
           {links.map(link => (
-            <NavLink
+            <button
               key={link.to}
-              to={link.to}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) => `block py-3 transition-colors ${isActive ? 'text-jint-red font-semibold' : 'text-gray-900 dark:text-white hover:text-jint-red'}`}
+              type="button"
+              onClick={() => goTo(link.to)}
+              className="block w-full text-left py-3 transition-colors text-gray-900 dark:text-white hover:text-jint-red"
             >
               {link.label}
-            </NavLink>
+            </button>
           ))}
         </motion.div>
       )}

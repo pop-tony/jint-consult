@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, BadgeCheck, Sparkles } from 'lucide-react'
 import { getServiceBySlug } from '../data/services'
@@ -7,6 +7,7 @@ import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function ServiceDetailPage() {
   const { serviceSlug } = useParams()
+  const navigate = useNavigate()
   const { siteContent } = useSiteSettings()
   const service = getServiceBySlug(serviceSlug, siteContent.services)
 
@@ -16,9 +17,9 @@ export default function ServiceDetailPage() {
         <div className="max-w-3xl mx-auto glass rounded-3xl p-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Service not found</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">The service you requested does not exist.</p>
-          <Link to="/services" className="btn-jint inline-flex">
+          <button type="button" onClick={() => navigate('/services')} className="btn-jint inline-flex">
             Back to Services
-          </Link>
+          </button>
         </div>
       </section>
     )
@@ -27,10 +28,10 @@ export default function ServiceDetailPage() {
   return (
     <section className="px-4 md:px-6 py-20 bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto space-y-10 md:space-y-14">
-        <Link to="/services" className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors">
+        <button type="button" onClick={() => navigate('/services')} className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors">
           <ArrowLeft className="w-4 h-4" />
           Back to services
-        </Link>
+        </button>
 
         <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-start">
           <motion.div

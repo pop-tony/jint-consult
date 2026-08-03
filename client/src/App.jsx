@@ -1,4 +1,5 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import Footer from './components/Footer'
 import GlassNav from './components/GlassNav'
 import LiquidCursor from './components/LiquidCursor'
@@ -15,12 +16,23 @@ import ContactPage from './pages/ContactPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
 
+function ScrollToTop() {
+  const location = useLocation()
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [location.pathname])
+
+  return null
+}
+
 
 function App() {
   return (
     <ThemeProvider>
       <SiteSettingsProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <LiquidCursor />
           <div className="min-h-screen bg-white dark:bg-black text-zinc-900 dark:text-zinc-100">
             <GlassNav />

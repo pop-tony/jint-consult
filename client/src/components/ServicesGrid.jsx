@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function ServicesGrid() {
   const { siteContent } = useSiteSettings()
+  const navigate = useNavigate()
   const services = siteContent.services || []
 
   return (
@@ -22,10 +23,11 @@ export default function ServicesGrid() {
         {/* 2 cols on mobile, 3 on lg */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8">
           {services.map((service, i) => (
-            <Link
+            <button
               key={i}
-              to={`/services/${service.slug}`}
-              className="block"
+              type="button"
+              onClick={() => navigate(`/services/${service.slug}`)}
+              className="block text-left"
             >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -60,7 +62,7 @@ export default function ServicesGrid() {
                   </p>
                 </div>
               </motion.div>
-            </Link>
+            </button>
           ))}
         </div>
       </div>
