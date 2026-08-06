@@ -1,12 +1,72 @@
 import consultModel from '../models/consultationModel.js'
 import orderAModel from '../models/orderAModel.js'
 import siteSettingsModel from '../models/siteSettingsModel.js'
+import cloudinary from '../lib/cloudinary.js'
+import { defaultSiteContent } from '../../client/src/data/siteDefaults.js'
+
+function mergeDeep(base, override) {
+  if (Array.isArray(base)) {
+    return Array.isArray(override) ? override : base
+  }
+
+  if (base && typeof base === 'object') {
+    const result = { ...base }
+    const source = override && typeof override === 'object' ? override : {}
+
+    Object.keys(source).forEach(key => {
+      result[key] = mergeDeep(base[key], source[key])
+    })
+
+    return result
+  }
+
+  return override ?? base
+}
+
+function shouldUploadImageField(path) {
+  const field = path[path.length - 1]
+  return typeof field === 'string' && /image$|backgroundImage$/i.test(field)
+}
+
+async function normalizeContentImages(value, path = []) {
+  if (Array.isArray(value)) {
+    const normalizedItems = []
+
+    for (let index = 0; index < value.length; index += 1) {
+      normalizedItems.push(await normalizeContentImages(value[index], [...path, index]))
+    }
+
+    return normalizedItems
+  }
+
+  if (value && typeof value === 'object') {
+    const normalizedEntries = await Promise.all(
+      Object.entries(value).map(async ([key, entryValue]) => [key, await normalizeContentImages(entryValue, [...path, key])])
+    )
+
+    return Object.fromEntries(normalizedEntries)
+  }
+
+  if (typeof value === 'string' && value.startsWith('data:image/') && shouldUploadImageField(path)) {
+    const uploadResult = await cloudinary.uploader.upload(value, { resource_type: 'image' })
+    return uploadResult.secure_url
+  }
+
+  return value
+}
 
 async function getOrCreateSiteSettings() {
   let settings = await siteSettingsModel.findOne({ key: 'main' })
 
   if (!settings) {
-    settings = await siteSettingsModel.create({ key: 'main', content: {} })
+    settings = await siteSettingsModel.create({ key: 'main', content: defaultSiteContent })
+    return settings
+  }
+
+  if (!settings.content || Object.keys(settings.content).length === 0) {
+    settings.content = defaultSiteContent
+    await settings.save()
+    return settings
   }
 
   return settings
@@ -90,7 +150,7 @@ export const updateEnquiryStatus = async (req, res) => {
 export const getPublicSiteSettings = async (req, res) => {
   try {
     const settings = await getOrCreateSiteSettings()
-    return res.json({ success: true, settings })
+    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeDeep(defaultSiteContent, settings.content || {}) } })
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
   }
@@ -99,7 +159,7 @@ export const getPublicSiteSettings = async (req, res) => {
 export const getAdminSiteSettings = async (req, res) => {
   try {
     const settings = await getOrCreateSiteSettings()
-    return res.json({ success: true, settings })
+    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeDeep(defaultSiteContent, settings.content || {}) } })
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
   }
@@ -108,13 +168,15 @@ export const getAdminSiteSettings = async (req, res) => {
 export const updateAdminSiteSettings = async (req, res) => {
   try {
     const { content } = req.body
+    const mergedContent = mergeDeep(defaultSiteContent, content || {})
+    const normalizedContent = await normalizeContentImages(mergedContent)
     const settings = await siteSettingsModel.findOneAndUpdate(
       { key: 'main' },
-      { content },
+      { content: normalizedContent },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     )
 
-    return res.json({ success: true, settings })
+    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeDeep(defaultSiteContent, settings.content || {}) } })
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
   }

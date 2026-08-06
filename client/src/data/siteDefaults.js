@@ -1,4 +1,4 @@
-import { consultationService, serviceSubjects, services } from './services'
+import { consultationService, serviceSubjects, services } from './services.js'
 
 export const defaultSiteContent = {
   brand: {
