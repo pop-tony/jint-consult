@@ -15,6 +15,7 @@ import TestimonialsPage from './pages/TestimonialsPage'
 import ContactPage from './pages/ContactPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
+import Seo from './components/Seo'
 
 function ScrollToTop() {
   const location = useLocation()
@@ -33,6 +34,7 @@ function App() {
       <SiteSettingsProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <Seo />
           <LiquidCursor />
           <div className="min-h-screen bg-white dark:bg-black text-zinc-900 dark:text-zinc-100">
             <GlassNav />
