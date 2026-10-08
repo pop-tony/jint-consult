@@ -67,6 +67,25 @@ export default function ServiceDetailPage() {
               </div>
             </div>
 
+            {service.sectors?.length ? (
+              <div className="glass rounded-3xl p-6 md:p-8">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">IT Services sectors</h2>
+                <div className="space-y-3">
+                  {service.sectors.map(sector => (
+                    <button
+                      key={sector.slug}
+                      type="button"
+                      onClick={() => navigate(`/services/${sector.slug}`)}
+                      className="w-full text-left glass rounded-2xl p-4 hover:text-jint-red transition-colors"
+                    >
+                      <span className="block font-semibold text-gray-900 dark:text-white">{sector.title}</span>
+                      <span className="block text-sm text-gray-600 dark:text-gray-400 mt-1">{sector.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
             <div className="grid grid-cols-3 gap-3">
               {service.gallery.map((image, index) => (
                 <div key={image} className="glass rounded-2xl overflow-hidden h-28 md:h-36">

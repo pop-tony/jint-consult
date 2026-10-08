@@ -23,6 +23,22 @@ function mergeDeep(base, override) {
   return override ?? base
 }
 
+function mergeNewServices(content) {
+  const savedServices = Array.isArray(content?.services) ? content.services : []
+  const defaultItServices = defaultSiteContent.services.find(service => service.slug === 'it-services')
+  const sectorSlugs = new Set(defaultItServices?.sectors?.map(sector => sector.slug) || [])
+  const migratedServices = savedServices.filter(service => !sectorSlugs.has(service.slug))
+  const savedSlugs = new Set(migratedServices.map(service => service.slug))
+  const newServices = defaultSiteContent.services.filter(service => (
+    service.category === 'IT Services' && !savedSlugs.has(service.slug)
+  ))
+
+  return {
+    ...content,
+    services: [...migratedServices, ...newServices],
+  }
+}
+
 export function SiteSettingsProvider({ children }) {
   const [siteContent, setSiteContent] = useState(defaultSiteContent)
   const [loading, setLoading] = useState(true)
@@ -36,7 +52,7 @@ export function SiteSettingsProvider({ children }) {
         const savedContent = response.data?.settings?.content || response.data?.settings || {}
 
         if (mounted) {
-          setSiteContent(mergeDeep(defaultSiteContent, savedContent))
+          setSiteContent(mergeDeep(defaultSiteContent, mergeNewServices(savedContent)))
         }
       } catch {
         if (mounted) {
