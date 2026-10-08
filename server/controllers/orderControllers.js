@@ -1,6 +1,49 @@
 import consultModel from "../models/consultationModel.js";
 import orderAModel from "../models/orderAModel.js";
 import orderModel from "../models/orderModel.js";
+import siteSettingsModel from "../models/siteSettingsModel.js";
+import { defaultSiteContent } from "../../client/src/data/siteDefaults.js";
+
+async function getConfiguredService(serviceSlug) {
+  const settings = await siteSettingsModel.findOne({ key: 'main' }).lean();
+  const savedContent = settings?.content || {};
+  const savedServices = Array.isArray(savedContent.services) ? savedContent.services : [];
+
+  const findService = (catalog) => {
+    for (const service of catalog) {
+      if (service.slug === serviceSlug) return service;
+      const sector = service.sectors?.find(item => item.slug === serviceSlug);
+      if (sector) return sector;
+    }
+    return null;
+  };
+
+  if (serviceSlug === 'book-consultation') {
+    return savedContent.booking?.consultation || defaultSiteContent.booking.consultation;
+  }
+
+  return findService(savedServices) || findService(defaultSiteContent.services);
+}
+
+async function requestPaystack(path, options = {}) {
+  const response = await fetch(`https://api.paystack.co${path}`, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
+    },
+  });
+  const payload = await response.json();
+
+  if (!response.ok || !payload.status) {
+    const error = new Error(payload.message || 'Paystack request failed');
+    error.paystackResponse = payload;
+    throw error;
+  }
+
+  return payload.data;
+}
 
 export const createOrderA = async (req, res) => {
   try {
@@ -184,5 +227,90 @@ export const deleteConsult = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.json({ success: false, message: 'Failed to delete consult' });
+  }
+}
+
+export const initializePayment = async (req, res) => {
+  try {
+    const { email, serviceSlug, serviceName, callbackUrl } = req.body?.formData || {};
+    const service = await getConfiguredService(serviceSlug);
+    const amount = Number(service?.price);
+
+    if (!email || !serviceSlug || !serviceName || !Number.isFinite(amount) || amount <= 0) {
+      return res.status(400).json({ success: false, message: 'Online payment is not available for this service yet.' });
+    }
+
+    if (!process.env.PAYSTACK_SECRET_KEY) {
+      console.error('Paystack initialization failed: PAYSTACK_SECRET_KEY is not configured');
+      return res.status(503).json({ success: false, message: 'Online payment is temporarily unavailable. Please try again later.' });
+    }
+
+    const reference = `JINT-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    const payment = await requestPaystack('/transaction/initialize', {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        amount: Math.round(amount * 100),
+        currency: 'GHS',
+        reference,
+        callback_url: process.env.PAYSTACK_CALLBACK_URL || callbackUrl,
+        metadata: { serviceSlug, serviceName },
+      }),
+    });
+
+    return res.json({ success: true, authorizationUrl: payment.authorization_url, reference: payment.reference, amount });
+  } catch (error) {
+    console.error('Paystack payment initialization failed:', error);
+    return res.status(502).json({ success: false, message: 'We could not start secure payment. Please try again.' });
+  }
+}
+
+export const verifyPayment = async (req, res) => {
+  try {
+    const { reference, formData } = req.body || {};
+    const { name, email, phone, date, time, notes, serviceSlug } = formData || {};
+    const service = await getConfiguredService(serviceSlug);
+    const amount = Number(service?.price);
+
+    if (!reference || !name || !email || !phone || !date || !time || !serviceSlug || !Number.isFinite(amount) || amount <= 0) {
+      return res.status(400).json({ success: false, message: 'We could not verify this booking. Please contact us for help.' });
+    }
+
+    if (!process.env.PAYSTACK_SECRET_KEY) {
+      console.error('Paystack verification failed: PAYSTACK_SECRET_KEY is not configured');
+      return res.status(503).json({ success: false, message: 'Payment verification is temporarily unavailable. Please contact us.' });
+    }
+
+    const existingBooking = await orderModel.findOne({ paymentReference: reference });
+    if (existingBooking) {
+      return res.json({ success: true, message: 'Payment verified and booking received.', data: existingBooking._id });
+    }
+
+    const payment = await requestPaystack(`/transaction/verify/${encodeURIComponent(reference)}`);
+    const expectedAmount = Math.round(amount * 100);
+
+    if (payment.status !== 'success' || Number(payment.amount) !== expectedAmount || payment.currency !== 'GHS') {
+      console.error('Paystack payment verification mismatch:', { reference, expectedAmount, payment });
+      return res.status(400).json({ success: false, message: 'Payment could not be verified. Please contact us before trying again.' });
+    }
+
+    const booking = await orderModel.create({
+      clientName: name,
+      email,
+      phone,
+      date,
+      time,
+      notes,
+      serviceName: service.title,
+      servicePrice: amount,
+      paymentReference: reference,
+      paymentStatus: 'paid',
+      status: 'paid',
+    });
+
+    return res.json({ success: true, message: 'Payment verified and booking received.', data: booking._id });
+  } catch (error) {
+    console.error('Paystack payment verification failed:', error);
+    return res.status(502).json({ success: false, message: 'We could not confirm your payment. Please contact us before trying again.' });
   }
 }

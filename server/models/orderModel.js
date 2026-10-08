@@ -9,6 +9,8 @@ const ordersShema = new mongoose.Schema({
     email: {type: String, required: true},
     serviceName:{type: String, required: true},
     servicePrice:{type: Number, required: true},
+    paymentReference: {type: String},
+    paymentStatus: {type: String, default: 'not_required'},
     status: {type: String, default: "order made"},
 },{timestamps: true},)
 

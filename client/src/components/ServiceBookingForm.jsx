@@ -33,18 +33,40 @@ export default function ServiceBookingForm({ service, title = 'Book this service
     setStatus({ type: '', message: '' })
 
     try {
-      await api.post('/order/create-orderA', {
-        formData: {
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          date: data.date,
-          time: data.time,
-          notes: data.notes,
-          serviceName: service.title,
-          servicePrice: service.price,
-        },
-      })
+      const formData = {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        date: data.date,
+        time: data.time,
+        notes: data.notes,
+        serviceName: service.title,
+        serviceSlug: service.slug,
+        servicePrice: service.price,
+      }
+
+      if (Number(service.price) > 0) {
+        sessionStorage.setItem('jint-pending-booking', JSON.stringify(formData))
+        setStatus({ type: 'pending', message: 'Redirecting you to secure payment...' })
+
+        const response = await api.post('/order/initialize-payment', {
+          formData: {
+            email: data.email,
+            serviceName: service.title,
+            serviceSlug: service.slug,
+            callbackUrl: `${window.location.origin}/book-consultation`,
+          },
+        })
+
+        if (!response.data?.authorizationUrl) {
+          throw new Error('Paystack did not return a payment URL')
+        }
+
+        window.location.assign(response.data.authorizationUrl)
+        return
+      }
+
+      await api.post('/order/create-orderA', { formData })
 
       setStatus({ type: 'success', message: 'Booking submitted successfully. We will contact you shortly.' })
       reset({
@@ -56,9 +78,10 @@ export default function ServiceBookingForm({ service, title = 'Book this service
         notes: `I would like to book ${service.title}.`,
       })
     } catch (error) {
+      console.error('Booking submission failed:', error)
       setStatus({
         type: 'error',
-        message: error?.response?.data?.message || 'Failed to submit booking. Please try again.',
+        message: error?.response?.data?.message || 'We could not submit your booking. Please try again.',
       })
     }
   }
@@ -140,7 +163,7 @@ export default function ServiceBookingForm({ service, title = 'Book this service
           disabled={isSubmitting}
           className="inline-flex items-center justify-center gap-2 bg-jint-red hover:bg-jint-red-dark text-white px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 disabled:opacity-70 disabled:hover:scale-100"
         >
-          {isSubmitting ? 'Submitting...' : 'Book Service'}
+          {isSubmitting ? 'Submitting...' : Number(service.price) > 0 ? 'Continue to payment' : 'Submit request'}
           <Send className="w-4 h-4" />
         </button>
       </div>
