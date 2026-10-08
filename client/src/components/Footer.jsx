@@ -87,8 +87,8 @@ export default function Footer() {
         <div className="border-t border-gray-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 dark:text-gray-500 text-sm">
           <div>{footer.copyright}</div>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-jint-red transition-colors cursor-pointer">Privacy Policy</a>
-            <a href="#" className="hover:text-jint-red transition-colors cursor-pointer">Terms of Service</a>
+            <a href="/privacy" className="hover:text-jint-red transition-colors cursor-pointer">Privacy Policy</a>
+            <a href="/terms" className="hover:text-jint-red transition-colors cursor-pointer">Terms and Conditions</a>
           </div>
         </div>
       </div>

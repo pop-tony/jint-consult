@@ -16,6 +16,14 @@ const pageMetadata = {
     title: 'About Jint Consult',
     description: 'Learn about Jint Consult history, company news, clients, and gallery.',
   },
+  '/privacy': {
+    title: 'Privacy Policy | Jint Consult',
+    description: 'Read the Jint Consult privacy policy and how we handle personal information.',
+  },
+  '/terms': {
+    title: 'Terms and Conditions | Jint Consult',
+    description: 'Read the Jint Consult terms and conditions for website use and services.',
+  },
   '/book-consultation': {
     title: 'Book a Consultation | Jint Consult',
     description: 'Schedule a consultation with Jint Consult for practical financial and business guidance.',
