@@ -6,7 +6,6 @@ export default function Hero3D() {
   const { siteContent } = useSiteSettings()
   const navigate = useNavigate()
   const hero = siteContent.hero
-  const stats = siteContent.stats
 
   return (
     <section id="home" className="relative min-h-screen w-full overflow-hidden">
@@ -26,13 +25,13 @@ export default function Hero3D() {
 
       {/* Content floating on top */}
       <div className="relative z-10 container mx-auto min-h-screen flex items-center px-6 pt-32 pb-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="w-full">
           {/* Left: Text Card */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }} 
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="glass rounded-3xl p-8 md:p-12 backdrop-blur-2xl"
+            className="glass rounded-3xl p-8 md:p-12 backdrop-blur-2xl max-w-4xl mx-auto text-center"
           >
             <div className="inline-block glass-red px-4 py-2 rounded-full mb-6">
               <span className="text-jint-red font-semibold text-sm">{hero.eyebrow}</span>
@@ -46,7 +45,7 @@ export default function Hero3D() {
               {hero.subtitle}
             </p>
             
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               <button
                 type="button"
                 onClick={() => navigate(hero.primaryCtaLink)}
@@ -60,47 +59,6 @@ export default function Hero3D() {
               </a>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-wrap gap-6 mt-10 pt-8 border-t border-white/20">
-              <div>
-                <div className="text-3xl font-bold text-white">8+</div>
-                <div className="text-white/70 text-sm">Years Experience</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-white">500+</div>
-                <div className="text-white/70 text-sm">Clients Served</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-white">99%</div>
-                <div className="text-white/70 text-sm">Satisfaction</div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right: Floating Glass Stats Cards */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }} 
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="hidden lg:block space-y-6"
-          >
-            {stats.slice(0, 3).map((stat, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + i * 0.1 }}
-                whileHover={{ scale: 1.05, x: 10 }}
-                className="glass rounded-2xl p-6 backdrop-blur-2xl cursor-default"
-              >
-                <div className="flex items-center gap-4">
-                  <div>
-                    <div className="text-2xl font-bold text-white">{stat.value}{stat.suffix || ''}</div>
-                    <div className="text-white/70 text-sm">{stat.label}</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
           </motion.div>
         </div>
       </div>
