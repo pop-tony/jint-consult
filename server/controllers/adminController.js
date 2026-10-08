@@ -23,6 +23,44 @@ function mergeDeep(base, override) {
   return override ?? base
 }
 
+function mergeServices(defaultServices, savedServices) {
+  const savedItems = Array.isArray(savedServices) ? savedServices : []
+  const defaultItServices = defaultServices.find(service => service.slug === 'it-services')
+  const sectorSlugs = new Set(defaultItServices?.sectors?.map(sector => sector.slug) || [])
+  const migratedItems = savedItems.filter(service => !sectorSlugs.has(service.slug))
+  const savedBySlug = new Map(migratedItems.map(service => [service.slug, service]))
+
+  const mergedDefaults = defaultServices.map(defaultService => {
+    const savedService = savedBySlug.get(defaultService.slug)
+    if (!savedService) return defaultService
+
+    const mergedService = { ...defaultService, ...savedService }
+    if (Array.isArray(defaultService.sectors)) {
+      const savedSectors = Array.isArray(savedService.sectors) ? savedService.sectors : []
+      const savedSectorsBySlug = new Map(savedSectors.map(sector => [sector.slug, sector]))
+      mergedService.sectors = defaultService.sectors.map(defaultSector => ({
+        ...defaultSector,
+        ...(savedSectorsBySlug.get(defaultSector.slug) || {}),
+      }))
+    }
+
+    return mergedService
+  })
+
+  const defaultSlugs = new Set(defaultServices.map(service => service.slug))
+  const customServices = migratedItems.filter(service => !defaultSlugs.has(service.slug))
+  return [...mergedDefaults, ...customServices]
+}
+
+function mergeSiteContent(content) {
+  const mergedContent = mergeDeep(defaultSiteContent, content)
+
+  return {
+    ...mergedContent,
+    services: mergeServices(defaultSiteContent.services, content?.services),
+  }
+}
+
 function shouldUploadImageField(path) {
   const field = path[path.length - 1]
   return typeof field === 'string' && /image$|backgroundImage$/i.test(field)
@@ -150,7 +188,7 @@ export const updateEnquiryStatus = async (req, res) => {
 export const getPublicSiteSettings = async (req, res) => {
   try {
     const settings = await getOrCreateSiteSettings()
-    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeDeep(defaultSiteContent, settings.content || {}) } })
+    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeSiteContent(settings.content || {}) } })
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
   }
@@ -159,7 +197,7 @@ export const getPublicSiteSettings = async (req, res) => {
 export const getAdminSiteSettings = async (req, res) => {
   try {
     const settings = await getOrCreateSiteSettings()
-    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeDeep(defaultSiteContent, settings.content || {}) } })
+    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeSiteContent(settings.content || {}) } })
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
   }
@@ -168,7 +206,7 @@ export const getAdminSiteSettings = async (req, res) => {
 export const updateAdminSiteSettings = async (req, res) => {
   try {
     const { content } = req.body
-    const mergedContent = mergeDeep(defaultSiteContent, content || {})
+    const mergedContent = mergeSiteContent(content || {})
     const normalizedContent = await normalizeContentImages(mergedContent)
     const settings = await siteSettingsModel.findOneAndUpdate(
       { key: 'main' },
@@ -176,7 +214,7 @@ export const updateAdminSiteSettings = async (req, res) => {
       { new: true, upsert: true, setDefaultsOnInsert: true }
     )
 
-    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeDeep(defaultSiteContent, settings.content || {}) } })
+    return res.json({ success: true, settings: { ...settings.toObject(), content: mergeSiteContent(settings.content || {}) } })
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
   }

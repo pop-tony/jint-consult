@@ -23,19 +23,41 @@ function mergeDeep(base, override) {
   return override ?? base
 }
 
-function mergeNewServices(content) {
-  const savedServices = Array.isArray(content?.services) ? content.services : []
-  const defaultItServices = defaultSiteContent.services.find(service => service.slug === 'it-services')
+function mergeServices(defaultServices, savedServices) {
+  const savedItems = Array.isArray(savedServices) ? savedServices : []
+  const defaultItServices = defaultServices.find(service => service.slug === 'it-services')
   const sectorSlugs = new Set(defaultItServices?.sectors?.map(sector => sector.slug) || [])
-  const migratedServices = savedServices.filter(service => !sectorSlugs.has(service.slug))
-  const savedSlugs = new Set(migratedServices.map(service => service.slug))
-  const newServices = defaultSiteContent.services.filter(service => (
-    service.category === 'IT Services' && !savedSlugs.has(service.slug)
-  ))
+  const migratedItems = savedItems.filter(service => !sectorSlugs.has(service.slug))
+  const savedBySlug = new Map(migratedItems.map(service => [service.slug, service]))
+
+  const mergedDefaults = defaultServices.map(defaultService => {
+    const savedService = savedBySlug.get(defaultService.slug)
+    if (!savedService) return defaultService
+
+    const mergedService = { ...defaultService, ...savedService }
+    if (Array.isArray(defaultService.sectors)) {
+      const savedSectors = Array.isArray(savedService.sectors) ? savedService.sectors : []
+      const savedSectorsBySlug = new Map(savedSectors.map(sector => [sector.slug, sector]))
+      mergedService.sectors = defaultService.sectors.map(defaultSector => ({
+        ...defaultSector,
+        ...(savedSectorsBySlug.get(defaultSector.slug) || {}),
+      }))
+    }
+
+    return mergedService
+  })
+
+  const defaultSlugs = new Set(defaultServices.map(service => service.slug))
+  const customServices = migratedItems.filter(service => !defaultSlugs.has(service.slug))
+  return [...mergedDefaults, ...customServices]
+}
+
+function mergeSiteContent(content) {
+  const mergedContent = mergeDeep(defaultSiteContent, content)
 
   return {
-    ...content,
-    services: [...migratedServices, ...newServices],
+    ...mergedContent,
+    services: mergeServices(defaultSiteContent.services, content?.services),
   }
 }
 
@@ -52,7 +74,7 @@ export function SiteSettingsProvider({ children }) {
         const savedContent = response.data?.settings?.content || response.data?.settings || {}
 
         if (mounted) {
-          setSiteContent(mergeDeep(defaultSiteContent, mergeNewServices(savedContent)))
+          setSiteContent(mergeSiteContent(savedContent))
         }
       } catch {
         if (mounted) {
