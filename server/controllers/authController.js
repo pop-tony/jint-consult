@@ -50,6 +50,52 @@ export const register = async (req, res)=>{
     }
 }
 
+// Register an admin user with the private setup key
+export const adminSignup = async (req, res)=>{
+    const {name, email, password, number, adminKey} = req.body;
+
+    if(!name || !email || !password || !number || !adminKey){
+        return res.json({success: false, message: 'All details are required'});
+    }
+
+    if(!process.env.ADMIN_SIGNUP_KEY || adminKey !== process.env.ADMIN_SIGNUP_KEY){
+        return res.json({success: false, message: 'Invalid admin setup key'});
+    }
+
+    try{
+        const existingUser = await userModel.findOne({email});
+
+        if(existingUser){
+            return res.json({success: false, message: 'An account with this email already exists'});
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new userModel({
+            name,
+            email,
+            number,
+            password: hashedPassword,
+            isAdmin: true,
+            isAccountVerified: true,
+        });
+
+        await user.save();
+
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '7d'});
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        return res.json({success: true});
+    }catch(error){
+        return res.json({success: false, message: error.message});
+    }
+}
+
 //Log in user
 export const login = async (req, res)=>{
     const {email, password} = req.body;
@@ -85,6 +131,42 @@ export const login = async (req, res)=>{
 
     }catch(error){
         res.json({success: false, message: error.message});
+    }
+}
+
+// Log in an admin user
+export const adminLogin = async (req, res)=>{
+    const {email, password} = req.body;
+
+    if(!email || !password){
+        return res.json({success: false, message: 'Email and Password required'});
+    }
+
+    try{
+        const user = await userModel.findOne({email});
+
+        if(!user || !user.isAdmin){
+            return res.json({success: false, message: 'Incorrect Password Or Username'});
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if(!isMatch){
+            return res.json({success: false, message: 'Incorrect Password Or Username'});
+        }
+
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '7d'});
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        return res.json({success: true});
+    }catch(error){
+        return res.json({success: false, message: error.message});
     }
 }
 
@@ -190,14 +272,14 @@ export const sendResetOtp = async (req, res)=>{
     const {email} = req.body;
 
     if(!email){
-        return json({succes: false, message: 'Email is required'})
+        return res.json({success: false, message: 'Email is required'})
     }
 
     try {
         
         const user = await userModel.findOne({email});
-        if(!user){
-            return res.json({success: false, message: 'User not found'});
+        if(!user || !user.isAdmin){
+            return res.json({success: false, message: 'No admin account found for this email'});
         }
 
         const otp = String(Math.floor(100000 + Math.random() * 900000));
@@ -234,8 +316,8 @@ export const resetPassword = async (req, res)=>{
     try {
         
         const user = await userModel.findOne({email});
-        if(!user){
-            return res.json({success: false, message: 'User not found'});
+        if(!user || !user.isAdmin){
+            return res.json({success: false, message: 'No admin account found for this email'});
         }
 
         if(user.resetOtp === "" || user.resetOtp !== otp){
