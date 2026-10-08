@@ -10,7 +10,7 @@ function MediaItem({ item }) {
         poster={item.poster}
         controls
         preload="metadata"
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain bg-black/5 dark:bg-white/5"
         aria-label={item.title || 'Jint Consult video'}
       />
     )
@@ -20,7 +20,7 @@ function MediaItem({ item }) {
     <img
       src={item.src}
       alt={item.title || 'Jint Consult gallery'}
-      className="w-full h-full object-cover"
+      className="w-full h-full object-contain bg-black/5 dark:bg-white/5"
       loading="lazy"
     />
   )
@@ -97,7 +97,7 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {(about.gallery || []).map((item, index) => (
               <figure key={`${item.src}-${index}`} className="glass rounded-3xl overflow-hidden">
-                <div className="relative aspect-[4/3]">
+                <div className="relative aspect-[4/3] bg-black/5 dark:bg-white/5">
                   <MediaItem item={item} />
                   {item.type === 'video' ? <Play className="absolute left-4 top-4 w-5 h-5 text-white" /> : null}
                 </div>
