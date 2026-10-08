@@ -1,5 +1,71 @@
 export const services = [
   {
+    slug: 'web-design-development',
+    title: 'Web Designing & Development',
+    shortTitle: 'Web Design & Development',
+    category: 'IT Services',
+    tag: 'IT Services',
+    price: 0,
+    priceLabel: 'Request a quote',
+    desc: 'Professional websites designed and developed for businesses, organizations, and personal brands.',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072',
+    gallery: [
+      'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072',
+      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2070',
+    ],
+    overview: 'Build a strong online presence with a responsive, easy-to-use website tailored to your goals and audience.',
+    features: [
+      'Responsive website design',
+      'Business and portfolio websites',
+      'Website updates and support',
+    ],
+  },
+  {
+    slug: 'it-consulting-services',
+    title: 'IT Consulting Services',
+    shortTitle: 'IT Consulting',
+    category: 'IT Services',
+    tag: 'IT Services',
+    price: 0,
+    priceLabel: 'Request a quote',
+    desc: 'Practical technology guidance to help businesses choose, improve, and manage their digital tools.',
+    image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=2070',
+    gallery: [
+      'https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=2070',
+      'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070',
+      'https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=2070',
+    ],
+    overview: 'Get clear recommendations and hands-on support for technology decisions, workflows, and digital operations.',
+    features: [
+      'Technology needs assessment',
+      'Digital tools and workflow guidance',
+      'IT planning and implementation support',
+    ],
+  },
+  {
+    slug: 'graphic-design',
+    title: 'Graphic Design',
+    shortTitle: 'Graphic Design',
+    category: 'IT Services',
+    tag: 'IT Services',
+    price: 0,
+    priceLabel: 'Request a quote',
+    desc: 'Creative visual design for brands, marketing materials, social media, and business communication.',
+    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2064',
+    gallery: [
+      'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2064',
+      'https://images.unsplash.com/photo-1542744094-3a31f272c490?q=80&w=2070',
+      'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2070',
+    ],
+    overview: 'Present your business professionally with clear, consistent, and memorable visual communication.',
+    features: [
+      'Brand identity and logo design',
+      'Marketing and promotional materials',
+      'Social media graphics',
+    ],
+  },
+  {
     slug: 'tax-accounting',
     title: 'Tax & Accounting',
     shortTitle: 'Tax & Accounting',
@@ -143,6 +209,9 @@ export const consultationService = {
 }
 
 export const serviceSubjects = [
+  'Web Designing & Development',
+  'IT Consulting Services',
+  'Graphic Design',
   'General Enquiry',
   'Tax & Accounting',
   'Business Consulting',
