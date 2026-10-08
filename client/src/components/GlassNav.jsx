@@ -32,8 +32,12 @@ export default function GlassNav() {
     >
       <div className="glass rounded-2xl px-6 flex items-center justify-between">
         <button type="button" onClick={() => goTo('/')} className="text-2xl font-bold text-gray-900 dark:text-white cursor-pointer">
-          {assets.jintLogo && (
-            <img src={assets.jintLogo} alt="JintConsult Logo" className="h-20 w-auto" />
+          {assets.jintLightLogo && assets.jintDarkLogo && (
+            <img
+              src={theme === 'dark' ? assets.jintDarkLogo : assets.jintLightLogo}
+              alt="Jint Consult logo"
+              className="h-20 w-auto"
+            />
           )}
         </button>
 

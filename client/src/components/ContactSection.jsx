@@ -19,9 +19,16 @@ export default function ContactSection() {
   const [status, setStatus] = useState({ type: '', message: '' })
   const { siteContent } = useSiteSettings()
   const contact = siteContent.contact
-  const mapQuery = encodeURIComponent(contact.mapQuery)
+  const mapAddress = String(contact.mapQuery || '')
+    .replace(/\bJnt Consult\b/gi, '')
+    .replace(/\bJint Consult\b/gi, '')
+    .replace(/^,\s*|,\s*$/g, '')
+    .trim()
+  const officeQuery = `Jint Consult, ${mapAddress}`
+  const mapQuery = encodeURIComponent(officeQuery)
   const mapSrc = `https://www.google.com/maps?q=${mapQuery}&output=embed`
   const mapsLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`
+  const directionsLink = `https://www.google.com/maps/dir/?api=1&destination=${mapQuery}`
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm({
     resolver: zodResolver(schema)
   })
@@ -92,7 +99,7 @@ export default function ContactSection() {
               Open in Google Maps
             </a>
             <a
-              href="https://www.google.com/maps"
+              href={directionsLink}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 glass px-5 py-3 rounded-xl font-semibold text-gray-900 dark:text-white transition-all hover:scale-105"

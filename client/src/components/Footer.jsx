@@ -1,9 +1,12 @@
 import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react'
 import { FaTwitter, FaInstagram, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
 import { useSiteSettings } from '../context/SiteSettingsContext'
+import { useTheme } from '../context/ThemeProvider'
+import assets from '../assets/assets.js'
 
 export default function Footer() {
   const { siteContent } = useSiteSettings()
+  const { theme } = useTheme()
   const footer = siteContent.footer
   const socials = [FaFacebookF, FaInstagram, FaTwitter, FaLinkedinIn, MessageCircle]
 
@@ -13,8 +16,12 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <a href="#home" className="inline-flex text-3xl font-bold text-gray-900 dark:text-white mb-4 cursor-pointer">
-              {siteContent.brand.name}
+            <a href="#home" className="inline-flex mb-4 cursor-pointer">
+              <img
+                src={theme === 'dark' ? assets.jintDarkLogo : assets.jintLightLogo}
+                alt={`${siteContent.brand.name} logo`}
+                className="h-20 w-auto"
+              />
             </a>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Your trusted partner for tax, accounting, business consulting, audit, and compliance services in Ghana.

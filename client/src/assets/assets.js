@@ -1,7 +1,9 @@
-import jintLogo from './jint-logo.png';
+import jintLightLogo from './jint_light.png'
+import jintDarkLogo from './jint_dark.png'
 
 const assets = {
-  jintLogo
+  jintLightLogo,
+  jintDarkLogo,
 }
 
-export default assets;
+export default assets
