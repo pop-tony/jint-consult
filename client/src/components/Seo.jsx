@@ -12,6 +12,10 @@ const pageMetadata = {
     title: 'Services | Jint Consult',
     description: 'Explore tax, accounting, audit, compliance, documentation, and financial advisory services from Jint Consult.',
   },
+  '/about': {
+    title: 'About Jint Consult',
+    description: 'Learn about Jint Consult history, company news, clients, and gallery.',
+  },
   '/book-consultation': {
     title: 'Book a Consultation | Jint Consult',
     description: 'Schedule a consultation with Jint Consult for practical financial and business guidance.',

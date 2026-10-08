@@ -17,6 +17,7 @@ const contentTabs = [
   { id: 'stats', label: 'Stats' },
   { id: 'services', label: 'Services' },
   { id: 'process', label: 'Process' },
+  { id: 'about', label: 'About' },
   { id: 'team', label: 'Team' },
   { id: 'testimonials', label: 'Testimonials' },
   { id: 'contact', label: 'Contact' },
@@ -48,6 +49,10 @@ const contentSectionMeta = {
   process: {
     title: 'Process section',
     description: 'Controls the step-by-step process block and WhatsApp callout.',
+  },
+  about: {
+    title: 'About page',
+    description: 'Controls the company history, news, gallery media, and client list.',
   },
   team: {
     title: 'Team section',
@@ -144,6 +149,37 @@ function ImageField({ label, value, onChange, helper }) {
           className="block w-full text-sm text-gray-600 dark:text-gray-400"
         />
       </div>
+    </label>
+  )
+}
+
+function MediaField({ label, value, onChange, type = 'image' }) {
+  return (
+    <label className="space-y-2 block">
+      <span className="block text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</span>
+      {value ? (
+        <div className="overflow-hidden rounded-2xl border border-white/20 bg-black/10">
+          {type === 'video' ? <video src={value} controls className="h-44 w-full object-cover" /> : <img src={value} alt={label} className="h-44 w-full object-cover" />}
+        </div>
+      ) : null}
+      <input
+        value={value || ''}
+        onChange={onChange}
+        placeholder={`Paste a ${type} link or upload a file`}
+        className="w-full glass rounded-2xl px-4 py-3 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-jint-red"
+      />
+      <input
+        type="file"
+        accept={`${type}/*`}
+        onChange={async (event) => {
+          const file = event.target.files?.[0]
+          if (!file) return
+
+          const dataUrl = await readFileAsDataUrl(file)
+          onChange({ target: { value: dataUrl } })
+        }}
+        className="block w-full text-sm text-gray-600 dark:text-gray-400"
+      />
     </label>
   )
 }
@@ -492,6 +528,81 @@ export default function AdminDashboardPage() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <SettingsField label="Step title" value={item.title || ''} onChange={(event) => updateNestedArrayItem('process', 'steps', index, 'title', event.target.value)} />
                   <SettingsField label="Description" value={item.desc || ''} onChange={(event) => updateNestedArrayItem('process', 'steps', index, 'desc', event.target.value)} multiline rows={3} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </ContentCard>
+      )
+    }
+
+    if (activeContentTab === 'about') {
+      return (
+        <ContentCard
+          title="About page"
+          description={contentSectionMeta.about.description}
+          action={<ArrayToolbar title="News items" helper="Publish company updates and announcements." onAdd={() => addNestedArrayItem('about', 'news', { title: 'New update', date: '', body: '', image: '' })} addLabel="Add news" />}
+        >
+          <div className="grid md:grid-cols-2 gap-4">
+            <SettingsField label="Page title" value={settingsDraft?.about?.title || ''} onChange={(event) => updateNestedValue('about', 'title', event.target.value)} />
+            <SettingsField label="Subtitle" value={settingsDraft?.about?.subtitle || ''} onChange={(event) => updateNestedValue('about', 'subtitle', event.target.value)} multiline rows={3} />
+            <SettingsField label="History heading" value={settingsDraft?.about?.historyTitle || ''} onChange={(event) => updateNestedValue('about', 'historyTitle', event.target.value)} />
+            <SettingsField label="Company history" value={settingsDraft?.about?.history || ''} onChange={(event) => updateNestedValue('about', 'history', event.target.value)} multiline rows={6} />
+          </div>
+
+          <div className="space-y-4">
+            {(settingsDraft?.about?.news || []).map((item, index) => (
+              <div key={index} className="glass rounded-2xl p-4 space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">News item {index + 1}</h3>
+                  <button type="button" onClick={() => removeNestedArrayItem('about', 'news', index)} className="text-sm text-jint-red">Remove</button>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <SettingsField label="Title" value={item.title || ''} onChange={(event) => updateNestedArrayItem('about', 'news', index, 'title', event.target.value)} />
+                  <SettingsField label="Date" value={item.date || ''} onChange={(event) => updateNestedArrayItem('about', 'news', index, 'date', event.target.value)} />
+                  <SettingsField label="Story" value={item.body || ''} onChange={(event) => updateNestedArrayItem('about', 'news', index, 'body', event.target.value)} multiline rows={4} />
+                  <ImageField label="News image" value={item.image || ''} onChange={(event) => updateNestedArrayItem('about', 'news', index, 'image', event.target.value)} helper="Paste a link or upload an image" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-4">
+            <ArrayToolbar title="Gallery" helper="Upload images or videos for visitors to browse." onAdd={() => addNestedArrayItem('about', 'gallery', { type: 'image', src: '', title: '', poster: '' })} addLabel="Add media" />
+            {(settingsDraft?.about?.gallery || []).map((item, index) => (
+              <div key={index} className="glass rounded-2xl p-4 space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Gallery item {index + 1}</h3>
+                  <button type="button" onClick={() => removeNestedArrayItem('about', 'gallery', index)} className="text-sm text-jint-red">Remove</button>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <SettingsField label="Title" value={item.title || ''} onChange={(event) => updateNestedArrayItem('about', 'gallery', index, 'title', event.target.value)} />
+                  <label className="space-y-2 block">
+                    <span className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Media type</span>
+                    <select value={item.type || 'image'} onChange={(event) => updateNestedArrayItem('about', 'gallery', index, 'type', event.target.value)} className="w-full glass rounded-2xl px-4 py-3 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-jint-red">
+                      <option value="image" className="bg-white dark:bg-zinc-900">Image</option>
+                      <option value="video" className="bg-white dark:bg-zinc-900">Video</option>
+                    </select>
+                  </label>
+                  <MediaField label={item.type === 'video' ? 'Video' : 'Image'} value={item.src || ''} onChange={(event) => updateNestedArrayItem('about', 'gallery', index, 'src', event.target.value)} type={item.type === 'video' ? 'video' : 'image'} />
+                  {item.type === 'video' ? <ImageField label="Video poster" value={item.poster || ''} onChange={(event) => updateNestedArrayItem('about', 'gallery', index, 'poster', event.target.value)} helper="Optional preview image" /> : null}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-4">
+            <ArrayToolbar title="Clients" helper="List the clients and organisations shown on the About page." onAdd={() => addNestedArrayItem('about', 'clients', { name: 'New client', logo: '', description: '' })} addLabel="Add client" />
+            {(settingsDraft?.about?.clients || []).map((item, index) => (
+              <div key={index} className="glass rounded-2xl p-4 space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="font-semibold text-gray-900 dark:text-white">Client {index + 1}</h3>
+                  <button type="button" onClick={() => removeNestedArrayItem('about', 'clients', index)} className="text-sm text-jint-red">Remove</button>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <SettingsField label="Client name" value={item.name || ''} onChange={(event) => updateNestedArrayItem('about', 'clients', index, 'name', event.target.value)} />
+                  <ImageField label="Client logo" value={item.logo || ''} onChange={(event) => updateNestedArrayItem('about', 'clients', index, 'logo', event.target.value)} helper="Paste a link or upload a logo" />
+                  <SettingsField label="Description" value={item.description || ''} onChange={(event) => updateNestedArrayItem('about', 'clients', index, 'description', event.target.value)} multiline rows={3} />
                 </div>
               </div>
             ))}

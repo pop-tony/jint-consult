@@ -13,6 +13,7 @@ import ProcessPage from './pages/ProcessPage'
 import TeamPage from './pages/TeamPage'
 import TestimonialsPage from './pages/TestimonialsPage'
 import ContactPage from './pages/ContactPage'
+import AboutPage from './pages/AboutPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import Seo from './components/Seo'
@@ -48,6 +49,7 @@ function App() {
                 <Route path="/team" element={<TeamPage />} />
                 <Route path="/testimonials" element={<TestimonialsPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/about" element={<AboutPage />} />
                 <Route path="/admin/login" element={<AdminLoginPage />} />
                 <Route path="/admin" element={<AdminDashboardPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />

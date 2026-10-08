@@ -46,6 +46,35 @@ export const defaultSiteContent = {
       { title: 'Implementation & Support', desc: 'We execute the plan and provide ongoing guidance' },
     ],
   },
+  about: {
+    title: 'About Jint Consult',
+    subtitle: 'Practical professional services for people and businesses building a stronger future.',
+    historyTitle: 'Our history',
+    history: 'Jint Consult has grown through a simple commitment: give every client clear guidance, dependable execution, and support they can trust. From tax and accounting to business, technology, and creative services, we help clients move forward with confidence.',
+    news: [
+      {
+        title: 'Jint Consult expands its IT Services offering',
+        date: '2026',
+        body: 'Our new web, technology consulting, and graphic design services help businesses build and communicate online.',
+        image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=2070',
+      },
+    ],
+    gallery: [
+      {
+        type: 'image',
+        src: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069',
+        title: 'Our consultation space',
+      },
+      {
+        type: 'image',
+        src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
+        title: 'Business planning session',
+      },
+    ],
+    clients: [
+      { name: 'Client organisation', description: 'Professional support and practical guidance.' },
+    ],
+  },
   team: {
     title: 'Meet The Team',
     subtitle: 'Real people handling your documents with care, speed, and legal expertise',

@@ -7,6 +7,7 @@ import assets from '../assets/assets.js'
 
 const links = [
   { label: 'Home', to: '/' },
+  { label: 'About', to: '/about' },
   { label: 'Services', to: '/services' },
   { label: 'Process', to: '/process' },
   { label: 'Team', to: '/team' },

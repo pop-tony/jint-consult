@@ -63,7 +63,7 @@ function mergeSiteContent(content) {
 
 function shouldUploadImageField(path) {
   const field = path[path.length - 1]
-  return typeof field === 'string' && /image$|backgroundImage$/i.test(field)
+  return typeof field === 'string' && /image$|backgroundImage$|src$|poster$/i.test(field)
 }
 
 async function normalizeContentImages(value, path = []) {
@@ -85,8 +85,9 @@ async function normalizeContentImages(value, path = []) {
     return Object.fromEntries(normalizedEntries)
   }
 
-  if (typeof value === 'string' && value.startsWith('data:image/') && shouldUploadImageField(path)) {
-    const uploadResult = await cloudinary.uploader.upload(value, { resource_type: 'image' })
+  if (typeof value === 'string' && /^data:(image|video)\//.test(value) && shouldUploadImageField(path)) {
+    const resourceType = value.startsWith('data:video/') ? 'video' : 'image'
+    const uploadResult = await cloudinary.uploader.upload(value, { resource_type: resourceType })
     return uploadResult.secure_url
   }
 
