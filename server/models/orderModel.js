@@ -12,6 +12,6 @@ const ordersShema = new mongoose.Schema({
     status: {type: String, default: "order made"},
 },{timestamps: true},)
 
-const orderModel = mongoose.models.jintbookings || mongoose.model('jintbookings', ordersShema);
+const orderModel = mongoose.models.jintconsultationbookings || mongoose.model('jintconsultationbookings', ordersShema);
 
 export default orderModel;

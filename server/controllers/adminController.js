@@ -1,5 +1,5 @@
 import consultModel from '../models/consultationModel.js'
-import orderAModel from '../models/orderAModel.js'
+import orderModel from '../models/orderModel.js'
 import siteSettingsModel from '../models/siteSettingsModel.js'
 import cloudinary from '../lib/cloudinary.js'
 import { defaultSiteContent } from '../../client/src/data/siteDefaults.js'
@@ -114,9 +114,9 @@ async function getOrCreateSiteSettings() {
 export const getAdminSummary = async (req, res) => {
   try {
     const [bookingCount, enquiryCount, latestBookings, latestEnquiries] = await Promise.all([
-      orderAModel.countDocuments(),
+      orderModel.countDocuments(),
       consultModel.countDocuments(),
-      orderAModel.find().sort({ createdAt: -1 }).limit(5),
+      orderModel.find().sort({ createdAt: -1 }).limit(5),
       consultModel.find().sort({ createdAt: -1 }).limit(5),
     ])
 
@@ -136,7 +136,7 @@ export const getAdminSummary = async (req, res) => {
 
 export const getAdminBookings = async (req, res) => {
   try {
-    const bookings = await orderAModel.find().sort({ createdAt: -1 })
+    const bookings = await orderModel.find().sort({ createdAt: -1 })
     return res.json({ success: true, bookings })
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message })
@@ -157,7 +157,7 @@ export const updateBookingStatus = async (req, res) => {
     const { bookingId } = req.params
     const { status } = req.body
 
-    const updatedBooking = await orderAModel.findByIdAndUpdate(bookingId, { status }, { new: true })
+    const updatedBooking = await orderModel.findByIdAndUpdate(bookingId, { status }, { new: true })
 
     if (!updatedBooking) {
       return res.status(404).json({ success: false, message: 'Booking not found' })

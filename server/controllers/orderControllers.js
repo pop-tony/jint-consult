@@ -7,7 +7,7 @@ export const createOrderA = async (req, res) => {
     const { name, email, phone, date, time, notes, serviceName, servicePrice } = req.body.formData;
     const clientName = name;
     // Validate required fields
-    if (!clientName || !email || !phone || !date || !time || !serviceName || !servicePrice) {
+    if (!clientName || !email || !phone || !date || !time || !serviceName || servicePrice === undefined || servicePrice === null || servicePrice === '') {
       return res.status(400).json({ success: false, message: 'Missing Required Details' });
     }
     const order = new orderModel({ clientName, email, phone, date, time, notes, serviceName, servicePrice });
@@ -96,7 +96,7 @@ export const deleteOrder = async (req, res) => {
     const { orderId } = req.body
 
   try {
-    await orderModel.deleteOne({ _id: orderId });
+    await orderAModel.deleteOne({ _id: orderId });
     return res.json({ success: true, message: "Order Deleted!" });
   } catch (error) {
     console.error(error);
