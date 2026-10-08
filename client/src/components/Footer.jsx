@@ -8,6 +8,9 @@ export default function Footer() {
   const { siteContent } = useSiteSettings()
   const { theme } = useTheme()
   const footer = siteContent.footer
+  const phoneNumbers = siteContent.contact?.phoneNumbers?.length
+    ? siteContent.contact.phoneNumbers
+    : [siteContent.contact?.phone || footer.phone].filter(Boolean)
   const socials = [FaFacebookF, FaInstagram, FaTwitter, FaLinkedinIn, MessageCircle]
 
   return (
@@ -59,10 +62,16 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Contact Us</h4>
             <div className="space-y-4">
-              <a href="tel:+233534958619" className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors cursor-pointer">
-                <Phone className="w-5 h-5 text-jint-red" />
-                +233 534958619
-              </a>
+              {phoneNumbers.map((phoneNumber, index) => (
+                <a
+                  key={`${phoneNumber}-${index}`}
+                  href={`tel:${String(phoneNumber).replace(/[^+\d]/g, '')}`}
+                  className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors cursor-pointer"
+                >
+                  <Phone className="w-5 h-5 text-jint-red" />
+                  {phoneNumber}
+                </a>
+              ))}
               <a href="mailto:info@jintconsult.com" className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-jint-red transition-colors cursor-pointer">
                 <Mail className="w-5 h-5 text-jint-red" />
                 info@jintconsult.com

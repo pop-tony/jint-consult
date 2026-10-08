@@ -578,6 +578,29 @@ export default function AdminDashboardPage() {
             <SettingsField label="Map query" value={settingsDraft?.contact?.mapQuery || ''} onChange={(event) => updateNestedValue('contact', 'mapQuery', event.target.value)} multiline rows={4} />
           </div>
           <div className="space-y-4">
+            <ArrayToolbar
+              title="Contact numbers"
+              helper="These numbers appear in the footer."
+              onAdd={() => addNestedArrayItem('contact', 'phoneNumbers', '')}
+              addLabel="Add number"
+            />
+            {(settingsDraft?.contact?.phoneNumbers || []).map((item, index) => (
+              <div key={index} className="glass rounded-2xl p-4 flex items-end gap-3">
+                <div className="flex-1">
+                  <SettingsField
+                    label={`Phone number ${index + 1}`}
+                    value={item || ''}
+                    onChange={(event) => updateNestedArrayValue('contact', 'phoneNumbers', index, event.target.value)}
+                    type="tel"
+                  />
+                </div>
+                <button type="button" onClick={() => removeNestedArrayItem('contact', 'phoneNumbers', index)} className="text-sm text-jint-red pb-3">
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-4">
             {(settingsDraft?.contact?.subjects || []).map((item, index) => (
               <div key={index} className="glass rounded-2xl p-4 space-y-3">
                 <div className="flex items-center justify-between gap-3">

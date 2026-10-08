@@ -96,6 +96,7 @@ export const defaultSiteContent = {
     title: 'Submit an Inquiry',
     subtitle: 'Visit us at our office or send a message using the form.',
     phone: '+233 534958619',
+    phoneNumbers: ['+233 534958619'],
     email: 'info@jintconsult.com',
     address: '14 Abuja Street Ritz Junction, Madina Accra\nGreater Accra, Ghana',
     mapQuery: '14 Abuja Street Ritz Junction, Madina Accra, Greater Accra, Ghana',
